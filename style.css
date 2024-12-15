@@ -1,0 +1,190 @@
+/* Основные стили для страницы */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #b061ff, #4c029a, #007bff, #00fff7);
+    background-size: 400% 400%;
+    animation: gradient-animation 10s ease infinite;
+    color: white;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Кнопка открытия панели */
+.button {
+    position: fixed;
+    top: 10px;
+    left: 50px;
+    padding: 6px 22px;
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 1000;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+    transform: scale(0.9);
+}
+
+/* Боковая панель */
+.panel {
+    position: fixed;
+    top: 0;
+    left: -324px;
+    height: 50%;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding: 20px;
+    transition: left 0.3s ease;
+    border-radius: 0 0 25px 0;
+}
+
+.panel.open {
+    left: 0;
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #6200ea;
+    font-family: cursive, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.panel ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.panel ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.panel ul li:last-child {
+    border-bottom: none;
+}
+
+/* Кнопки в панели */
+.el_panel_gl {
+    padding: 6px 22px;
+    font-size: 110%;
+    margin-bottom: 10px;
+    width: 140px;
+    background: linear-gradient(45deg, #00ffbf, #6200ea);
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: black;
+    box-shadow: 3px 6px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s, box-shadow 0.2s, background-position 0.5s ease;
+    border: 2px solid #00b868;
+}
+
+.el_panel_gl:hover {
+    background: linear-gradient(90deg, #00ffbf, #6200ea);
+    transform: scale(1.06);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+    border: 3px solid #310085;
+    background-size: 200% 200%;
+    animation: gradient-shift 1500ms ease infinite;
+}
+
+.el_panel_gl:active {
+    transform: scale(0.9);
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Скрытые секции */
+.main {
+    display: none;
+}
+
+.main.active {
+    display: block;
+}
+
+/* Оверлей */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay img {
+    max-width: 70%;
+    max-height: 70%;
+}
+
+#overlay #close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+/* Стили для изображений превью */
+.preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preview img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+    border-radius: 5px;
+    box-shadow: 2px 3px 1px #000000;
+}
+
+.preview img:hover {
+    transform: scale(1.2);;
+}
