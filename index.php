@@ -25,37 +25,30 @@
 <!-- Основной контент -->
 <main id="main0" class="main active">
     <section id="pn_PRZYWITALNY">
-        <?php
-        $conn = new mysqli("localhost", "root", "02dE@Ks7sw5sRc4cGj9", "biblioteka_zss");
-        if ($conn->connect_error) {
-            die("Ошибка подключения: " . $conn->connect_error);
-        }
+    <form method="post" action="" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="tytul">Tytuł:</label>
+            <input type="text" id="tytul" name="tytul" required>
+        </div>
 
-        $query = "SELECT * FROM aktualnosci";
-        $result = $conn->query($query);
+        <div class="form-group">
+            <label for="tresc">Treść:</label>
+            <textarea id="tresc" name="tresc" rows="4" required></textarea>
+        </div>
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_array()) {
-                echo "<section class='aktual' style='background-color:rgb(0, 148, 84); margin: 10px; padding: 10px; border-radius: 10px;'>";
-                echo "<h1>" . htmlspecialchars($row[1]) . "</h1>";
-                echo "<p>" . htmlspecialchars($row[2]) . "</p>";
-                echo "<p>" . htmlspecialchars($row[3]) . "</p>";
+        <div class="form-group">
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
+        </div>
 
-                // Форма для загрузки изображений
-                echo "<form method='POST' enctype='multipart/form-data' class='upload-form'>";
-                echo "<label for='files_" . $row['id'] . "'>Wybierz Zdjęcia:</label><br>";
-                echo "<input type='file' name='files[]' class='file-input' data-id='" . $row['id'] . "' accept='image/*' multiple><br><br>";
-                echo "<div class='preview' id='preview_" . $row['id'] . "' style='background-color:rgba(0, 38, 121, 0.81); margin: 5px; padding: 10px; border-radius: 10px;'></div>";
-                echo "<br><br><button type='submit'>Wyślij</button>";
-                echo "</form>";
-                echo "</section>";
-            }
-        } else {
-            echo "<p>Нет записей.</p>";
-        }
+        <div class="form-group">
+            <label for="zdjecia">Zdjęcia:</label>
+            <input type="file" id="zdjecia" name="zdjecia[]" class="file-input" data-id="1" multiple accept="image/*">
+            <div id="preview_1" class="preview" style='background-color:rgba(0, 38, 121, 0.81); margin: 5px; padding: 10px; border-radius: 10px; width: 100%; height: 100%'></div>
+        </div>
 
-        $conn->close();
-        ?>
+        <button type="submit" class="el_panel_gl">Zapisz</button>
+    </form>
     </section>
 </main>
 

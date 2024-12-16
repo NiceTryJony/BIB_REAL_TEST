@@ -9,27 +9,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Обработчик превью изображений
-    document.querySelectorAll('.file-input').forEach(input => {
-        input.addEventListener('change', (event) => {
-            const preview = document.getElementById(`preview_${input.dataset.id}`);
+    const fileInput = document.getElementById('zdjecia');
+    const preview = document.getElementById('preview_1');
+
+    if (fileInput && preview) {
+        fileInput.addEventListener('change', (event) => {
             preview.innerHTML = '';
             const files = Array.from(event.target.files);
 
             files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.addEventListener('click', () => {
-                        overlayImage.src = img.src;
-                        overlay.style.display = 'flex';
-                    });
-                    preview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '150px';
+                        img.style.height = '150px';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '8px';
+                        img.style.margin = '5px';
+                        img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                        img.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+                        
+                        img.addEventListener('mouseover', () => {
+                            img.style.transform = 'scale(1.05)';
+                            img.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.3)';
+                        });
+                        
+                        img.addEventListener('mouseout', () => {
+                            img.style.transform = 'scale(1)';
+                            img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                        });
+
+                        img.addEventListener('click', () => {
+                            overlayImage.src = img.src;
+                            overlay.style.display = 'flex';
+                        });
+
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
         });
-    });
+    }
 
     // Закрытие оверлея
     closeButton.addEventListener('click', () => {
