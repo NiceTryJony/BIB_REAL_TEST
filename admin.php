@@ -20,19 +20,47 @@ session_start();
     <!-- Боковая панель -->
     <section class="panel" id="sidePanel">
         <br><br>
-        <h2 id="pan_gl_nap">Panel Główny</h2>
+        <h2 id="pan_gl_nap">Panel Główny <b style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Admin</b></h2><br>
         <ul>
-            <li><button class="el_panel_gl" onclick="switchPanel('main0')">Panel Główny</button></li>
-            <li><button class="el_panel_gl" onclick="switchPanel('main1')">Konkursy</button></li>
-            <li><button class="el_panel_gl" onclick="switchPanel('main2')">Wyjazdy</button></li>
-            <li><button class="el_panel_gl" onclick="switchPanel('main3')">Wycieczki</button></li>
+            <li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL">Panel Główny</button></li>
+            <li><button class="el_panel_gl" onclick="switchPanel('main1')" id="konkursy">Konkursy</button></li>
+            <li><button class="el_panel_gl" onclick="switchPanel('main2')" id="wyjazdy">Wyjazdy</button></li>
+            <li><button class="el_panel_gl" onclick="switchPanel('main3')" id="wycieczki">Wycieczki</button></li>
         </ul>
     </section>
+    <script>
+        function prepareFilename() {
+            const titleField = document.getElementById("tytul");
+            const fileField = document.getElementById("zdjecia");
+            const form = document.getElementById("uploadForm");
 
+            // Генерация текущей даты
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+            const year = now.getFullYear();
+
+            // Формирование имени файла
+            const title = titleField.value.trim().replace(/\s+/g, "_");
+            const newFilename = `${day}_${month}_${year}_${title}`;
+
+            // Создаем скрытое поле для передачи имени файла
+            const filenameField = document.createElement("input");
+            filenameField.type = "hidden";
+            filenameField.name = "filename";
+            filenameField.value = newFilename;
+
+            form.appendChild(filenameField);
+        }
+    </script>
     <main id='main0' class='main active' style='display:none;'>
-        <section id='pn_PRZYWITALNY'>
-            <form method='post' enctype='multipart/form-data'>
+        <h1>WITAM NA PANELU ADMINISTRATORA</h1>
+    </main>
+    <main id='main1' class='main active' style='display:none;'>
+        <section id='pn_KONKURS'>
+            <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
+                    <h1 id="pan_kon">DODAJ KONKURS</h1>
                     <label for='tytul'>Tytuł:</label>
                     <input type='text' id='tytul' name='tytul' required>
                 </div>
@@ -54,7 +82,69 @@ session_start();
                 </div>
 
                 <button type="submit" id="usun" name="">Usuń</button>
-                <button type='submit' class='el_panel_gl'>Zapisz</button>
+                <button type='submit' class='el_panel_gl' id="zap">Zapisz</button>
+            </form>
+        </section>
+    </main>
+
+    <main id='main2' class='main active' style='display:none;'>
+        <section id='pn_WYJAZDY'>
+            <form method='post' enctype='multipart/form-data' id="uploadForm">
+                <div class='form-group'>
+                    <h1 id="pan_wyj">DODAJ WYJŚCIE</h1>
+                    <label for='tytul'>Tytuł:</label>
+                    <input type='text' id='tytul' name='tytul' required>
+                </div>
+
+                <div class='form-group'>
+                    <label for='tresc'>Treść:</label>
+                    <textarea id='tresc' name='tresc' rows='4' required></textarea>
+                </div>
+
+                <div class='form-group'>
+                    <label for='data'>Data:</label>
+                    <input type='date' id='data' name='data' required>
+                </div>
+
+                <div class='form-group'>
+                    <label for='zdjecia'>Zdjęcia:</label>
+                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='image/*'>
+                    <div id='preview_1' class='preview'></div>
+                </div>
+
+                <button type="reset" id="usun" name="">Usuń</button>
+                <button type='submit' class='el_panel_gl' id="zap">Zapisz</button>
+            </form>
+        </section>
+    </main>
+
+    <main id='main3' class='main active' style='display:none;'>
+        <section id='pn_WYCIECZKI'>
+            <form method='post' enctype='multipart/form-data' id="uploadForm">
+                <div class='form-group'>
+                    <h1 id="pan_wyc">DODAJ WYCIECZKĘ</h1>
+                    <label for='tytul'>Tytuł:</label>
+                    <input type='text' id='tytul' name='tytul' required>
+                </div>
+
+                <div class='form-group'>
+                    <label for='tresc'>Treść:</label>
+                    <textarea id='tresc' name='tresc' rows='4' required></textarea>
+                </div>
+
+                <div class='form-group'>
+                    <label for='data'>Data:</label>
+                    <input type='date' id='data' name='data' required>
+                </div>
+
+                <div class='form-group'>
+                    <label for='zdjecia'>Zdjęcia:</label>
+                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='image/*'>
+                    <div id='preview_1' class='preview'></div>
+                </div>
+
+                <button type="submit" id="usun" name="">Usuń</button>
+                <button type='submit' class='el_panel_gl' id="zap">Zapisz</button>
             </form>
         </section>
     </main>
@@ -70,20 +160,29 @@ session_start();
                 <input type="password" id="haslo" placeholder="Wpisz hasło" name="haslo" required>
             </div>
             <div class="form-buttons">
-                <input type="reset" value="Powrót" onclick="window.location.href='../BIB_REAL_TEST/'" class="btn-back">
+                <input type="reset" value="Powrót" onKeyDown onclick="window.location.href='../BIB_REAL_TEST/'" class="btn-back" style="margin-left: 10px;">
+                <input type="submit" value="Zarejestrój" name="zarejestroj" class="btn-login" style="width: 140px; padding: 5px; ">
                 <input type="submit" value="Zaloguj" name="zaloguj" class="btn-login">
             </div>
         </form>
     </nav>
     <?php
-    if (isset($_POST['zarejstruj'])) {
+    if(isset($_POST['zarejestroj'])) {
         $email = $_POST['email'];
         $haslo = $_POST['haslo'];
-        $zahaszowane_haslo = password_hash($haslo, PASSWORD_DEFAULT);
-        mysqli_query($polaczenie, "INSERT INTO `konta` VALUES (NULL,'$email','$zahaszowane_haslo','admin');");
-        echo "<script>alert('$zahaszowane_haslo')</script>";
+        $hashed_password = password_hash($haslo, PASSWORD_DEFAULT);
+
+        $zapytanie = "INSERT INTO konta (id, nazwa_uzytkownika, haslo, uprawnienia) VALUES (NULL, '$email', '$hashed_password', 'admin')";
+        if(mysqli_query($polaczenie,$zapytanie)){
+            echo "<script>alert('Admin został dodany')</script>";
+        }else{
+            echo "<script>alert('Admin nie został dodany')</script>";
+        }
     }
-    if (isset($_POST['zaloguj'])) {
+
+    ?>
+    <?php
+    if(isset($_POST['zaloguj'])) {
         $email = $_POST['email'];
         $haslo = $_POST['haslo'];
         $sprHaslo = mysqli_query($polaczenie, "SELECT haslo FROM konta WHERE nazwa_uzytkownika='$email'");
@@ -97,8 +196,9 @@ session_start();
                 $_SESSION['zalogowano'] = $sesja[0];
                 echo "
                 <script>
-                    document.getElementById('main0').style.display='inline';
+                    document.getElementById('main3').style.display='inline';
                     document.getElementById('logowanie').style.display='none';
+
                 </script>";
             } else {
                 echo "<script>

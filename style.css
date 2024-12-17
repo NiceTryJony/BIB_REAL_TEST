@@ -6,9 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(90deg, #280050, #4c029a, #007bff, #00fff7);
-    background-size: 400% 400%;
-    animation: gradient-animation 10s ease infinite;
+    background: linear-gradient(90deg, #500000a2, #05029a94, #007bffaf, #00fff76d);
     color: white;
 }
 
@@ -37,8 +35,8 @@ form {
 }
 
 .form-group {
-    margin-bottom: 20px;
-    margin: 10px;
+    margin-bottom: 10px;
+    margin-right: 20px;
 }
 
 .form-group label {
@@ -102,7 +100,6 @@ button[type="submit"] {
     letter-spacing: 1px;
     width: auto;
     display: block;
-    margin: 20px auto 0;
     box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3);
 }
 
@@ -144,13 +141,13 @@ button[type="submit"]:active {
 /* Боковая панель */
 .panel {
     position: fixed;
-    top: -460px;
+    top: -550px;
     left: 0;
-    height: 50%;
+    max-height: 500px;
     width: 170px;
     background-color: #fff;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
+    overflow: none;
     padding: 20px;
     transition: top 0.7s ease;
     border-radius: 0 0 25px 0;
@@ -190,14 +187,12 @@ button[type="submit"]:active {
     width: 140px;
     background: linear-gradient(45deg, #00ffbf, #6200ea);
     color: #000000;
-    border: none;
     border-radius: 8px;
     cursor: pointer;
-    color: black;
     box-shadow: 3px 6px 8px rgba(0, 0, 0, 0.2);
-    
     transition: transform 0.4s, box-shadow 0.2s, background-position 0.5s ease;
     border: 2px solid #00b868;
+    text-align:center;
 }
 
 .el_panel_gl:hover {
@@ -205,26 +200,13 @@ button[type="submit"]:active {
     transform: scale(1.06);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
     border: 3px solid #310085;
-    background-size: 200% 200%;
-    
-    animation: gradient-shift 1500ms ease infinite;
 }
 
 .el_panel_gl:active {
     transform: scale(0.9);
 }
-/*
-@keyframes gradient-shift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}*/
+
+
 
 /* Скрытые секции */
 .main {
@@ -282,7 +264,7 @@ button[type="submit"]:active {
 }
 
 .preview img:hover {
-    transform: scale(1.2);;
+    transform: scale(1.2);
 }
 
 #preview_1{
@@ -309,12 +291,12 @@ button[type="submit"]:active {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    box-shadow: 10px 14px 25px rgba(0, 0, 0, 0.4);
 }
 
 .login-form .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .login-form label {
@@ -322,7 +304,7 @@ button[type="submit"]:active {
     margin-bottom: 8px;
     color: #fff;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 21px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -334,7 +316,7 @@ button[type="submit"]:active {
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.9);
     color: #333;
-    font-size: 16px;
+    font-size: 20px;
     transition: all 0.3s ease;
 }
 
@@ -354,8 +336,7 @@ button[type="submit"]:active {
 
 .btn-back,
 .btn-login {
-    padding: 12px 30px;
-    border: none;
+    padding: 8px 20px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
@@ -365,9 +346,11 @@ button[type="submit"]:active {
     letter-spacing: 1px;
 }
 
+
 .btn-back {
     background: rgba(255, 255, 255, 0.2);
     color: white;
+    
 }
 
 .btn-login {

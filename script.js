@@ -67,9 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Переключение панелей
-function switchPanel(panelId) {
-    document.querySelectorAll('.main').forEach(panel => {
-        panel.classList.remove('active');
-    });
-    document.getElementById(panelId).classList.add('active');
-}
+ function switchPanel(panelId) {
+     document.querySelectorAll('.main').forEach(panel => {
+         panel.classList.remove('active');
+     });
+     document.getElementById(panelId).classList.add('active');
+     document.getElementById(panelId).style.display='inline';
+ }

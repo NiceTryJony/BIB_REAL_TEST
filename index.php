@@ -13,7 +13,7 @@
 
 <!-- Боковая панель -->
 <section class="panel" id="sidePanel">
-    <br><br><h2 id="pan_gl_nap">Panel Główny</h2>
+    <br><br><h2 id="pan_gl_nap">Panel Główny</h2><br>
     <ul>
         <li><button class="el_panel_gl" onclick="switchPanel('main0')">Panel Główny</button></li>
         <li><button class="el_panel_gl" onclick="switchPanel('main1')">Konkursy</button></li>
@@ -26,11 +26,7 @@
 <main id="main1" class="main"><h2>Konkursy</h2></main>
 <main id="main2" class="main"><h2>Wyjazdy</h2></main>
 <main id="main3" class="main"><h2>Wycieczki</h2></main>
-<!-- Общий оверлей -->
-<div id="overlay">
-    <span id="close">X</span>
-    <img src="" alt="Zoomed Image" style="border-radius: 15px;">
-</div>
+
 <script src="script.js"></script>
 </body>
 </html>
