@@ -22,7 +22,7 @@ INSERT INTO `aktualnosci` (`id`, `tytul`, `tresc`, `data`, `nazwy_zdjec`) VALUES
 DROP TABLE IF EXISTS `konta`;
 CREATE TABLE `konta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nazwa_uzytkownika` varchar(50) NOT NULL,
+  `nazwa_uzytkownika` varchar(50) NOT NULL, --zmienić nazwę na email
   `haslo` varchar(255) NOT NULL,
   `uprawnienia` enum('admin','pelne','akt') NOT NULL DEFAULT 'akt',
   PRIMARY KEY (`id`)
