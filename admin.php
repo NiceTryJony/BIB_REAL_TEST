@@ -103,7 +103,7 @@ session_start();
             } else {
                 echo "<script>
                 console.log('złe hasło');
-                const alarm='Nie prawidlowy email lub hasło! \n Przenosimy cię do strony głównej.';
+                const alarm='Nie prawidlowy email lub hasło! \n Przenosimy cię do strony głównej..';
                 alert(alarm);
                 
                     </script>";
