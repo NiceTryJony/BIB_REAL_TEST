@@ -19,10 +19,10 @@ session_start();
 
     <!-- Боковая панель -->
     <section class="panel" id="sidePanel">
-        <br><br>
-        <h2 id="pan_gl_nap">Panel Główny <b style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Admin</b></h2><br>
+        <br>
+        <h2 id="pan_gl_nap">Panel Główny</h2>
         <ul>
-            <li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL">Panel Główny</button></li>
+            <!--li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL">Strona główna</button></li-->
             <li><button class="el_panel_gl" onclick="switchPanel('main1')" id="konkursy">Konkursy</button></li>
             <li><button class="el_panel_gl" onclick="switchPanel('main2')" id="wyjazdy">Wyjazdy</button></li>
             <li><button class="el_panel_gl" onclick="switchPanel('main3')" id="wycieczki">Wycieczki</button></li>
@@ -54,9 +54,51 @@ session_start();
         }
     </script>
     <main id='main0' class='main active' style='display:none;'>
-        <h1>WITAM NA PANELU ADMINISTRATORA</h1>
+            <h1>WITAM NA PANELU ADMINISTRATORA</h1>
+            <button class="el_panel_gl" onclick="switchPanel('main1')" id="konkursy" style="width:300px;height:200px;margin:7px;font-size:290%;">Konkursy</button>
+            <button class="el_panel_gl" onclick="switchPanel('main2')" id="wyjazdy" style="width:300px;height:200px;margin:7px;font-size:290%;">Wyjazdy</button>
+            <button class="el_panel_gl" onclick="switchPanel('main3')" id="wycieczki" style="width:300px;height:200px;margin:7px;font-size:290%;">Wycieczki</button>
     </main>
     <main id='main1' class='main active' style='display:none;'>
+        <section class="pn_KONKURS_dane">
+            <?php
+                $konkursy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM konkursy");
+                if(mysqli_num_rows(result: $konkursy) < 1){
+                    echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
+                } else {
+                    while($k_wiersz = mysqli_fetch_array(result: $konkursy)){
+                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
+                                <div class='form-group'>
+                                    <h1 id='pan_kon'>DODAJ KONKURS</h1>
+                                    <label for='tytul'>Tytuł:</label>
+                                    <input type='text' id='tytul' name='tytul' value='{$k_wiersz[1]}' required>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='tresc'>Treść:</label>
+                                    <textarea id='tresc' name='tresc' rows='4' value='{$k_wiersz[2]}' required></textarea>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='data'>Data:</label>
+                                    <input type='date' id='data' name='data' value='{$k_wiersz[3]}' required>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='zdjecia'>Zdjęcia:</label>
+                                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='photo/*' value='{$k_wiersz[4]}'>
+                                    <div id='preview_1' class='preview'></div>
+                                </div>
+
+                                <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
+                                <button type='submit' id='usun' name='usun'>Usuń</button>
+                                <button type='submit' class='el_panel_gl'>Zapisz</button>
+                        </form>";
+                    }
+                }
+            ?>
+        </section>
+        <!--ZRÓB OGRANICZENIE DO ILOŚCI TEKTU W TYTÓL, TREŚĆ itd-->
         <section id='pn_KONKURS'>
             <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
@@ -81,8 +123,8 @@ session_start();
                     <div id='preview_1' class='preview'></div>
                 </div>
 
-                <button type="submit" id="usun" name="">Usuń</button>
-                <button type='submit' class='el_panel_gl' id="zap">Zapisz</button>
+                <button type="reset">Wyczyść</button>
+                <button type='submit' class='el_panel_gl'>Dodaj</button>
             </form>
         </section>
     </main>
@@ -91,7 +133,7 @@ session_start();
         <section id='pn_WYJAZDY'>
             <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
-                    <h1 id="pan_wyj">DODAJ WYJŚCIE</h1>
+                    <h1 id="pan_wyj">DODAJ WYJAZD</h1>
                     <label for='tytul'>Tytuł:</label>
                     <input type='text' id='tytul' name='tytul' required>
                 </div>
@@ -113,7 +155,7 @@ session_start();
                 </div>
 
                 <button type="reset" id="usun" name="">Usuń</button>
-                <button type='submit' class='el_panel_gl' id="zap">Zapisz</button>
+                <button type='submit' class='el_panel_gl'>Zapisz</button>
             </form>
         </section>
     </main>
@@ -144,7 +186,7 @@ session_start();
                 </div>
 
                 <button type="submit" id="usun" name="">Usuń</button>
-                <button type='submit' class='el_panel_gl' id="zap">Zapisz</button>
+                <button type='submit' class='el_panel_gl'>Zapisz</button>
             </form>
         </section>
     </main>
@@ -161,13 +203,13 @@ session_start();
             </div>
             <div class="form-buttons">
                 <input type="reset" value="Powrót" onKeyDown onclick="window.location.href='../BIB_REAL_TEST/'" class="btn-back" style="margin-left: 10px;">
-                <input type="submit" value="Zarejestrój" name="zarejestroj" class="btn-login" style="width: 140px; padding: 5px; ">
                 <input type="submit" value="Zaloguj" name="zaloguj" class="btn-login">
+                <!--input type="submit" value="Zarejestrój" name="zarejestroj" class="btn-login" style="width: 140px; padding: 5px; "-->
             </div>
         </form>
     </nav>
-    <?php
-    if(isset($_POST['zarejestroj'])) {
+    <!--?php
+       if(isset($_POST['zarejestroj'])) {
         $email = $_POST['email'];
         $haslo = $_POST['haslo'];
         $hashed_password = password_hash($haslo, PASSWORD_DEFAULT);
@@ -179,8 +221,7 @@ session_start();
             echo "<script>alert('Admin nie został dodany')</script>";
         }
     }
-
-    ?>
+    ?-->
     <?php
     if(isset($_POST['zaloguj'])) {
         $email = $_POST['email'];
@@ -196,23 +237,39 @@ session_start();
                 $_SESSION['zalogowano'] = $sesja[0];
                 echo "
                 <script>
-                    document.getElementById('main3').style.display='inline';
+                    document.getElementById('main0').style.display='inline';
                     document.getElementById('logowanie').style.display='none';
+
+                    // Переключение панелей
+                    function switchPanel(panelId) {
+                        // Скрыть все панели
+                        document.querySelectorAll('.main').forEach(panel => {
+                            panel.classList.remove('active');
+                            panel.style.display = 'none'; // Скрыть панель
+                        });
+                        // Показать активную панель
+                        const activePanel = document.getElementById(panelId);
+                        if (activePanel) {
+                            activePanel.classList.add('active');
+                            activePanel.style.display = 'block'; // Показать панель
+                        }
+                    }
+                
 
                 </script>";
             } else {
                 echo "<script>
-                console.log('złe hasło');
-                const alarm='Nie prawidlowy email lub hasło! \n Przenosimy cię do strony głównej..';
-                alert(alarm);
-                
+                        console.log('złe hasło');
+                        const alarm='Nie prawidlowy email lub hasło! \n Przenosimy cię do strony głównej..';
+                        alert(alarm);
+                        window.location.href='../BIB_REAL_TEST/';
                     </script>";
             } //window.location.href='../BIB_REAL_TEST/';
         } else {
             echo "<script>
-            console.log('zły email');
-            alert('Nie prawidlowy email lub hasło! Przenosimy cię do strony głównej.');
-            
+                    console.log('zły email');
+                    alert('Nie prawidlowy email lub hasło! Przenosimy cię do strony głównej.');
+                    window.location.href='../BIB_REAL_TEST/';
                 </script>";
         }
     }

@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     reader.onload = (e) => {
                         const img = document.createElement('img');
                         img.src = e.target.result;
-                        img.style.width = '150px';
-                        img.style.height = '150px';
+                        img.style.width = '104px';
+                        img.style.height = '104px';
                         img.style.objectFit = 'cover';
                         img.style.borderRadius = '8px';
                         img.style.margin = '5px';
-                        img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                        img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.4)';
                         img.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
                         
                         img.addEventListener('mouseover', () => {
@@ -65,12 +65,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-// Переключение панелей
- function switchPanel(panelId) {
-     document.querySelectorAll('.main').forEach(panel => {
-         panel.classList.remove('active');
-     });
-     document.getElementById(panelId).classList.add('active');
-     document.getElementById(panelId).style.display='inline';
- }
