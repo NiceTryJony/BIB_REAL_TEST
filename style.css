@@ -281,7 +281,6 @@ button[type="reset"]:active {
 .preview {
     display: flex;
     flex-wrap: wrap;
-    /* gap: 10px; */
 }
 
 .preview img {
