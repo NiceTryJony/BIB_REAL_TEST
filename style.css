@@ -50,9 +50,13 @@ form {
 
 .form-group input[type="text"],
 .form-group input[type="date"],
-.form-group textarea {
+.form-group textarea,
+.form-group #tytol,
+.form-group #tresc,
+.form-group #data {
     width: 100%;
     padding: 12px;
+    scroll-margin-right: 30px;
     border: 2px solid #6200ea;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.9);
@@ -61,7 +65,8 @@ form {
     transition: all 0.3s ease;
 }
 
-.form-group input[type="file"] {
+.form-group input[type="file"],
+.form-group #zdjecia {
     width: 100%;
     padding: 10px;
     background: rgba(255, 255, 255, 0.9);

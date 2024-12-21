@@ -19,7 +19,7 @@ session_start();
 
     <!-- Боковая панель -->
     <section class="panel" id="sidePanel">
-        <br>
+        <br><br>
         <h2 id="pan_gl_nap">Panel Główny</h2>
         <ul>
             <!--li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL">Strona główna</button></li-->
@@ -54,52 +54,15 @@ session_start();
         }
     </script>
     <main id='main0' class='main active' style='display:none;'>
-            <h1>WITAM NA PANELU ADMINISTRATORA</h1>
+            <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 30px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin: 20px auto;">WITAM NA PANELU ADMINISTRATORA</h1>
             <button class="el_panel_gl" onclick="switchPanel('main1')" id="konkursy" style="width:300px;height:200px;margin:7px;font-size:290%;">Konkursy</button>
             <button class="el_panel_gl" onclick="switchPanel('main2')" id="wyjazdy" style="width:300px;height:200px;margin:7px;font-size:290%;">Wyjazdy</button>
             <button class="el_panel_gl" onclick="switchPanel('main3')" id="wycieczki" style="width:300px;height:200px;margin:7px;font-size:290%;">Wycieczki</button>
     </main>
+            <!--ZRÓB OGRANICZENIE DO ILOŚCI TEKTU W TYTÓL, TREŚĆ itd-->
     <main id='main1' class='main active' style='display:none;'>
-        <section class="pn_KONKURS_dane">
-            <?php
-                $konkursy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM konkursy");
-                if(mysqli_num_rows(result: $konkursy) < 1){
-                    echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
-                } else {
-                    while($k_wiersz = mysqli_fetch_array(result: $konkursy)){
-                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
-                                <div class='form-group'>
-                                    <h1 id='pan_kon'>DODAJ KONKURS</h1>
-                                    <label for='tytul'>Tytuł:</label>
-                                    <input type='text' id='tytul' name='tytul' value='{$k_wiersz[1]}' required>
-                                </div>
-
-                                <div class='form-group'>
-                                    <label for='tresc'>Treść:</label>
-                                    <textarea id='tresc' name='tresc' rows='4' value='{$k_wiersz[2]}' required></textarea>
-                                </div>
-
-                                <div class='form-group'>
-                                    <label for='data'>Data:</label>
-                                    <input type='date' id='data' name='data' value='{$k_wiersz[3]}' required>
-                                </div>
-
-                                <div class='form-group'>
-                                    <label for='zdjecia'>Zdjęcia:</label>
-                                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='photo/*' value='{$k_wiersz[4]}'>
-                                    <div id='preview_1' class='preview'></div>
-                                </div>
-
-                                <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
-                                <button type='submit' id='usun' name='usun'>Usuń</button>
-                                <button type='submit' class='el_panel_gl'>Zapisz</button>
-                        </form>";
-                    }
-                }
-            ?>
-        </section>
-        <!--ZRÓB OGRANICZENIE DO ILOŚCI TEKTU W TYTÓL, TREŚĆ itd-->
-        <section id='pn_KONKURS'>
+    <section id="pn_DODATKOWA_KON" style="display:flex; gap: 250px; align-items: flex-start;">
+        <section id='pn_KONKURS' style="flex: 1; max-width: 40%;">
             <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
                     <h1 id="pan_kon">DODAJ KONKURS</h1>
@@ -127,10 +90,74 @@ session_start();
                 <button type='submit' class='el_panel_gl'>Dodaj</button>
             </form>
         </section>
+        <section id="pn_KONKURS_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 600px; flex: 1; padding: 10px; padding-right: 70px;">
+            <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 18px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin-left:14px ;">DODANE KONKURSY</h1>
+            <?php
+                $konkursy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM konkursy");
+                if(mysqli_num_rows(result: $konkursy) < 1){
+                    echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
+                } else {
+                    while($k_wiersz = mysqli_fetch_array(result: $konkursy)){
+                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
+                                <div class='form-group'>
+                                    <label for='tytul'>Tytuł:</label>
+                                    <div id='tytol' name='tytul'>{$k_wiersz[1]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='tresc'>Treść:</label>
+                                    <div id='tresc' name='tresc' rows='4'>{$k_wiersz[2]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='data'>Data:</label>
+                                    <div id='data' name='data'>{$k_wiersz[3]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='zdjecia'>Zdjęcia:</label>
+                                    
+                                    <div id='preview_1' class='preview'>{$k_wiersz[4]}</div>
+                                </div>
+                                <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
+                        </form>";
+                        // echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
+                        //         <div class='form-group'>
+                        //             <h1 id='pan_kon'>DODAJ KONKURS</h1>
+                        //             <label for='tytul'>Tytuł:</label>
+                        //             <input type='text' id='tytul' name='tytul' value='{$k_wiersz[1]}' required>
+                        //         </div>
+
+                        //         <div class='form-group'>
+                        //             <label for='tresc'>Treść:</label>
+                        //             <textarea id='tresc' name='tresc' rows='4' value='{$k_wiersz[2]}' required></textarea>
+                        //         </div>
+
+                        //         <div class='form-group'>
+                        //             <label for='data'>Data:</label>
+                        //             <input type='date' id='data' name='data' value='{$k_wiersz[3]}' required>
+                        //         </div>
+
+                        //         <div class='form-group'>
+                        //             <label for='zdjecia'>Zdjęcia:</label>
+                        //             <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='photo/*' value='{$k_wiersz[4]}'>
+                        //             <div id='preview_1' class='preview'></div>
+                        //         </div>
+
+                        //         <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
+                        //         <button type='submit' id='usun' name='usun'>Usuń</button>
+                        //         <button type='submit' class='el_panel_gl'>Zapisz</button>
+                        // </form>";
+                    }
+                }
+            ?>
+        </section>
+    </section>
     </main>
 
     <main id='main2' class='main active' style='display:none;'>
-        <section id='pn_WYJAZDY'>
+    <section id="pn_DODATKOWA_WYJ" style="display:flex; gap: 250px; align-items: flex-start;">
+        <section id='pn_WYJAZDY' style="flex: 1; max-width: 40%;">
             <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
                     <h1 id="pan_wyj">DODAJ WYJAZD</h1>
@@ -158,10 +185,47 @@ session_start();
                 <button type='submit' class='el_panel_gl'>Zapisz</button>
             </form>
         </section>
+        <section id="pn_WYJAZDY_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 600px; flex: 1; padding: 10px; padding-right: 70px;">
+        <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 18px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin-left:14px ;">DODANE WYJAZDY</h1>
+            <?php
+                $wyjazdy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM wyjazdy");
+                if(mysqli_num_rows(result: $wyjazdy) < 1){
+                    echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
+                } else {
+                    while($wyj_wiersz = mysqli_fetch_array(result: $wyjazdy)){
+                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
+                                <div class='form-group'>
+                                    <label for='tytul'>Tytuł:</label>
+                                    <div id='tytol' name='tytul'>{$wyj_wiersz[1]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='tresc'>Treść:</label>
+                                    <div id='tresc' name='tresc' rows='4'>{$wyj_wiersz[2]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='data'>Data:</label>
+                                    <div id='data' name='data'>{$wyj_wiersz[3]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='zdjecia'>Zdjęcia:</label>
+                                    
+                                    <div id='preview_1' class='preview'>{$wyj_wiersz[4]}</div>
+                                </div>
+                                <input type='number' value='{$wyj_wiersz[0]}' name='id' hidden>
+                        </form>";
+                    }
+                }
+            ?>
+        </section>
+        </section>
     </main>
 
     <main id='main3' class='main active' style='display:none;'>
-        <section id='pn_WYCIECZKI'>
+    <section id="pn_DODATKOWA_WYC" style="display:flex; gap: 250px; align-items: flex-start;">
+        <section id="pn_WYCIECZKI" tyle="flex: 1; max-width: 40%;">
             <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
                     <h1 id="pan_wyc">DODAJ WYCIECZKĘ</h1>
@@ -188,6 +252,42 @@ session_start();
                 <button type="submit" id="usun" name="">Usuń</button>
                 <button type='submit' class='el_panel_gl'>Zapisz</button>
             </form>
+        </section>
+        <section id="pn_WYCIECZKI_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 600px; flex: 1; padding: 10px; padding-right: 70px;">
+        <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 18px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin-left:14px ;">DODANE WYCIECZKĘ</h1>
+            <?php
+                $wycieczka = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM wycieczki");
+                if(mysqli_num_rows(result: $wycieczka) < 1){
+                    echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
+                } else {
+                    while($wyc_wiersz = mysqli_fetch_array(result: $wycieczka)){
+                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
+                                <div class='form-group'>
+                                    <label for='tytul'>Tytuł:</label>
+                                    <div id='tytol' name='tytul'>{$wyc_wiersz[1]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='tresc'>Treść:</label>
+                                    <div id='tresc' name='tresc' rows='4'>{$wyc_wiersz[2]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='data'>Data:</label>
+                                    <div id='data' name='data'>{$wyc_wiersz[3]}</div>
+                                </div>
+
+                                <div class='form-group'>
+                                    <label for='zdjecia'>Zdjęcia:</label>
+                                    
+                                    <div id='preview_1' class='preview'>{$wyc_wiersz[4]}</div>
+                                </div>
+                                <input type='number' value='{$wyc_wiersz[0]}' name='id' hidden>
+                        </form>";
+                    }
+                }
+            ?>
+        </section>
         </section>
     </main>
 
