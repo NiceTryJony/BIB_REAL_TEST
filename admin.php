@@ -13,16 +13,12 @@ session_start();
 ?>
 
 <body>
-
-    <!-- Кнопка для открытия панели -->
     <button class="button" id="toggleButton"><strong><span>☰</span></strong></button>
-
-    <!-- Боковая панель -->
     <section class="panel" id="sidePanel">
         <br><br>
         <h2 id="pan_gl_nap">Panel Główny</h2>
         <ul>
-            <!--li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL">Strona główna</button></li-->
+            <!--li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL" name=''>Strona główna</button></li-->
             <li><button class="el_panel_gl" onclick="switchPanel('main1')" id="konkursy">Konkursy</button></li>
             <li><button class="el_panel_gl" onclick="switchPanel('main2')" id="wyjazdy">Wyjazdy</button></li>
             <li><button class="el_panel_gl" onclick="switchPanel('main3')" id="wycieczki">Wycieczki</button></li>
@@ -87,68 +83,56 @@ session_start();
                 </div>
 
                 <button type="reset">Wyczyść</button>
-                <button type='submit' class='el_panel_gl'>Dodaj</button>
+                <button type='submit' class='el_panel_gl' name="dodaj_main1">Dodaj</button>
             </form>
         </section>
         <section id="pn_KONKURS_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 600px; flex: 1; padding: 10px; padding-right: 70px;">
             <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 18px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin-left:14px ;">DODANE KONKURSY</h1>
             <?php
-                $konkursy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM konkursy");
+                $konkursy = mysqli_query($polaczenie, "SELECT * FROM konkursy");
                 if(mysqli_num_rows(result: $konkursy) < 1){
                     echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
                 } else {
-                    while($k_wiersz = mysqli_fetch_array(result: $konkursy)){
+                    while($k_wiersz = mysqli_fetch_array($konkursy)){
                         echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
                                 <div class='form-group'>
+                                    <h1 id='pan_kon'>DODAJ KONKURS</h1>
                                     <label for='tytul'>Tytuł:</label>
-                                    <div id='tytol' name='tytul'>{$k_wiersz[1]}</div>
+                                    <input type='text' id='tytul' name='tytul' value='{$k_wiersz[1]}' required>
                                 </div>
 
                                 <div class='form-group'>
                                     <label for='tresc'>Treść:</label>
-                                    <div id='tresc' name='tresc' rows='4'>{$k_wiersz[2]}</div>
+                                    <input type='text' id='tresc' name='tresc' value='{$k_wiersz[2]}' style='width: ;height: ;' required>
                                 </div>
 
                                 <div class='form-group'>
                                     <label for='data'>Data:</label>
-                                    <div id='data' name='data'>{$k_wiersz[3]}</div>
+                                    <input type='date' id='data' name='data' value='{$k_wiersz[3]}' required>
                                 </div>
 
                                 <div class='form-group'>
                                     <label for='zdjecia'>Zdjęcia:</label>
-                                    
-                                    <div id='preview_1' class='preview'>{$k_wiersz[4]}</div>
+                                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='photo/*' value='{$k_wiersz[4]}'>
+                                    <div id='preview_1' class='preview'></div>
                                 </div>
+
                                 <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
+                                <button type='submit' id='usun' name='usun_main1'>Usuń</button>
+                                <button type='submit' class='el_panel_gl' name='zapisz_main1'>Zapisz</button>
                         </form>";
-                        // echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
-                        //         <div class='form-group'>
-                        //             <h1 id='pan_kon'>DODAJ KONKURS</h1>
-                        //             <label for='tytul'>Tytuł:</label>
-                        //             <input type='text' id='tytul' name='tytul' value='{$k_wiersz[1]}' required>
-                        //         </div>
-
-                        //         <div class='form-group'>
-                        //             <label for='tresc'>Treść:</label>
-                        //             <textarea id='tresc' name='tresc' rows='4' value='{$k_wiersz[2]}' required></textarea>
-                        //         </div>
-
-                        //         <div class='form-group'>
-                        //             <label for='data'>Data:</label>
-                        //             <input type='date' id='data' name='data' value='{$k_wiersz[3]}' required>
-                        //         </div>
-
-                        //         <div class='form-group'>
-                        //             <label for='zdjecia'>Zdjęcia:</label>
-                        //             <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='photo/*' value='{$k_wiersz[4]}'>
-                        //             <div id='preview_1' class='preview'></div>
-                        //         </div>
-
-                        //         <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
-                        //         <button type='submit' id='usun' name='usun'>Usuń</button>
-                        //         <button type='submit' class='el_panel_gl'>Zapisz</button>
-                        // </form>";
                     }
+                }
+                if(isset($_POST['usun_main1'])){
+                    $id = $_POST['id'];
+                    mysqli_query($polaczenie, "DELETE FROM konkursy WHERE id=$id");
+                }
+                if(isset($_POST['zapisz_main1'])){
+                    $id = $_POST['id'];
+                    $tytul = $_POST['tytul'];
+                    $tresc = $_POST['tresc'];
+                    $data = $_POST['data'];
+                    mysqli_query($polaczenie, "UPDATE konkursy SET tytul='$tytul' tresc='$tresc' `data`='$data' WHERE id=$id");
                 }
             ?>
         </section>
