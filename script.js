@@ -7,10 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('toggleButton').addEventListener('click', () => {
         document.getElementById('sidePanel').classList.toggle('open');
     });
-
     // Обработчик превью изображений
-    const fileInput = document.getElementById('zdjecia');
-    const preview = document.getElementById('preview_1');
+    const fileInput = document.querySelector('.file-input');
+    const preview = document.getElementById('preview');
 
     if (fileInput && preview) {
         fileInput.addEventListener('change', (event) => {
@@ -54,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    
+
     // Закрытие оверлея
     closeButton.addEventListener('click', () => {
         overlay.style.display = 'none';
@@ -62,6 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.addEventListener('click', (event) => {
         if (event.target === overlay) {
             overlay.style.display = 'none';
+        }
+    });
+
+    document.getElementById('wyloguj').addEventListener('click', function () {
+        if (confirm('Czy na pewno chesz wylogować się?')) {
+            document.getElementById('confirmInput').value = 'true'; // Устанавливаем подтверждение
+            document.getElementById('form_wyl').submit(); // Отправляем форму
+        } else {
+            alert('Anulowano wylogowanie.');
         }
     });
 });

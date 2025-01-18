@@ -33,6 +33,17 @@ form {
     max-width: 600px;
     margin: 20px auto;
 }
+#form_wyl{
+    background: none;
+    backdrop-filter: none;
+    border-radius: 15px;
+    box-shadow: none;
+    width: none;
+    max-width: 600px;
+    margin: none;
+    margin-top: -10px;
+    margin-left: -28px;
+}
 
 .form-group {
     margin-bottom: 10px;
@@ -93,7 +104,7 @@ form {
 button[type="submit"] {
     background: linear-gradient(45deg, #6200ea, #b061ff);
     color: white;
-    padding: 12px 30px;
+    padding: 12px 20px;
     border: none;
     border-radius: 8px;
     font-weight: bold;
@@ -109,9 +120,9 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
-    background: linear-gradient(45deg, #b061ff, #6200ea);
+     background: linear-gradient(45deg, #b061ff, #6200ea); 
+     border: none;
+    transform: scaleX(100px);
 }
 
 button[type="submit"]:active {
@@ -211,16 +222,19 @@ button[type="reset"]:active {
 /* Кнопки в панели */
 .el_panel_gl {
     padding: 6px 22px;
-    font-size: 110%;
-    width: 140px;
+    font-size: 100%;
+    width: 150px;
     background: linear-gradient(45deg, #00ffbf, #6200ea);
     color: #000000;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-transform: uppercase;
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 3px 6px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s, box-shadow 0.2s, background-position 0.5s ease;
     border: 3px solid #00b868;
     text-align:center;
+    transform: scaleX(1.0);
 }
 .el_panel_li{
     margin-bottom: 10px;
@@ -229,7 +243,7 @@ button[type="reset"]:active {
 .el_panel_gl:hover {
     background: linear-gradient(90deg, #00ffbf, #6200ea);
     transform: scaleX(1.1);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.4);
     border: 3px solid #310085;
 }
 
@@ -296,8 +310,7 @@ button[type="reset"]:active {
 .preview img:hover {
     transform: scale(1.2);
 }
-
-#preview_1{
+#preview{ 
     background-color:rgba(0, 38, 121, 0.81); 
     margin: 5px; 
     padding: 10px; 
