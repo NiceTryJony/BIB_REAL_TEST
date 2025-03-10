@@ -16,7 +16,7 @@ session_start();
     <button class="button" id="toggleButton"><strong><span>☰</span></strong></button>
     <section class="panel" id="sidePanel">
         <br><br>
-        <h2 id="pan_gl_nap">Panel Główny</h2>
+        <!-- <h2 id="pan_gl_nap">Panel Główny</h2> -->
         <ul>
             <!--li><button class="el_panel_gl" onclick="switchPanel('main0')" id="panGL" name=''>Strona główna</button></li-->
             <li><button class="el_panel_gl" onclick="switchPanel('main1')" id="konkursy">Konkursy</button></li>
@@ -79,8 +79,8 @@ session_start();
 
                 <div class='form-group'>
                     <label for='zdjecia'>Zdjęcia:</label>
-                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='image/*'>
-                    <div id='preview' class='preview'></div>
+                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-preview-id='preview_1' multiple accept='image/*'>
+                    <div id='preview_1' class='preview'></div>
                 </div>
 
                 <button type="reset">Wyczyść</button>
@@ -95,6 +95,23 @@ session_start();
                     echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
                 } else {
                     while($k_wiersz = mysqli_fetch_array($konkursy)){
+                         // {$k_wiersz[4]}  TO SĄ ZDJĘCIA    NIE USUWAĆ !!!
+                         $data = $k_wiersz[4];
+                         $images = explode(",", $data);
+                        // SPRAWDZAMY CZY SĄ ZDJĘCIA W ZMIENNEJ
+                        // if (!empty($images)) {
+                        //     foreach ($images as $image) {
+                        //         // KASUJEMY SPACJI (jeżeli są)
+                        //         $image = trim($image);
+                                
+                        //         // SPRAWDZAMY CZY LINIA NIE ZOSTAŁA PUSTA
+                        //         if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/$image")) {
+                        //             echo "<div id='preview' class='preview'><img src='/$image' alt='ZDJĘCIE' style='width: 104px; height: 104px; object-fit: cover; border-radius: 8px; margin: 5px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px; transition: transform 0.3s, box-shadow 0.3s; transform: scale(1);></div>'";
+                        //         }else{
+                        //             echo "<div id='preview' class='preview'><img src='/$image' alt='ZDJĘCIE' style='width: 0px; height: 0px; object-fit: cover; border-radius: 0px; margin: 0px; box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px; transition: transform 0.0s, box-shadow 0.0s; transform: scale(0);></div>'";
+                        //         }
+                        //     }
+                        // }
                         echo "<form method='post' enctype='multipart/form-data' id='uploadForm_res'>
                                 <div class='form-group'>
                                     <label for='tytul'>Tytuł:</label>
@@ -110,18 +127,16 @@ session_start();
                                     <label for='data'>Data:</label>
                                     <input type='date' id='data' name='data' value='{$k_wiersz[3]}' required>
                                 </div>
-
                                 <div class='form-group'>
-                                    <label for='zdjecia'>Zdjęcia:</label>
-                                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='photo/konkursy/*'>
-                                    <div id='preview' class='preview'></div>
-                                </div>
+                                <label for='zdjecia'>Zdjęcia:</label>
+                                <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='image/*'>";
 
+                          echo "</div>
                                 <input type='number' value='{$k_wiersz[0]}' name='id' hidden>
                                 <input type='hidden' name='confirm' value='false' id='confirmInput_res'>
                                 <button type='submit' id='usun' name='usun_main1'>Usuń konkurs</button>
                                 <button type='submit' class='el_panel_gl' name='zapisz_main1'>Zapisz zmiany</button>
-                        </form><br><br><br>";
+                            </form><br><br><br>";
                     }
                 }
                 function removePolishChars($text) {
@@ -154,8 +169,8 @@ session_start();
                         </script>";
 
                     if (!is_dir($targetPath)) {
-                        if (!mkdir($targetPath, 0777, true)) {
-                            echo "<script>alert('Nie udało się stworzyć каталог');</script>";
+                        if(!mkdir($targetPath, 0777, true)) {
+                            echo "<script>alert('Nie udało się stworzyć katalog');</script>";
                             exit;
                         }
                     }
@@ -181,10 +196,10 @@ session_start();
                             // Копирование файлов в конкретную папку
                             $targetFile = $_SERVER['DOCUMENT_ROOT'] . $uniqueFilename;
                             if (!copy($targetFile, $targetPath . '/' . basename($uniqueFilename))) {
-                                echo "<script>alert('Błąd podczas kopiowania pliku');</script>";
+                                echo "<script>alert('Kopiowanie pliku naciśnij OK');</script>";
                             }
                         } else {
-                            echo "<script>alert('Plik zapisał się prawidłowo naciśnij OK !');</script>";
+                            echo "<script>alert('Plik zapisał się NIE prawidłowo naciśnij OK !');</script>";
                             echo "<script>alert('".$uniqueFilename."');</script>";
                         }
                     }
@@ -200,9 +215,7 @@ session_start();
                     } else {
                         echo "<script>alert('POMYŁKA PRZY DODAWANIU DANYCH');</script>";
                     }
-                    
                 }
-
 
                 if(isset($_POST['usun_main1'])){
                     $id = $_POST['id'];
@@ -220,10 +233,11 @@ session_start();
                 }
                 if(isset($_POST['zapisz_main1'])){
                     $id = $_POST['id'];
-                    $tytul = $_POST['tytul'];
-                    $tresc = $_POST['tresc'];
-                    $data = $_POST['data'];
-                    mysqli_query($polaczenie, "UPDATE konkursy SET tytul='$tytul' tresc='$tresc' `data`='$data' WHERE id=$id");
+                    $tytul = !empty($_POST['tytul']) ? $_POST['tytul'] : $row['tytul'];
+                    $tresc = !empty($_POST['tresc']) ? $_POST['tresc'] : $row['tresc'];
+                    $data = !empty($_POST['data']) ? $_POST['data'] : $row['data'];
+                    $nazwy_zdjec = !empty($_POST['nazwy_zdjec']) ? $_POST['nazwy_zdjec'] : $row['nazwy_zdjec'];
+                    mysqli_query($polaczenie, "UPDATE konkursy SET tytul='$tytul' tresc='$tresc' `data`='$data' nazwy_zdjec='$nazwy_zdjec' WHERE id=$id");
                 }
             ?>
         </section>
@@ -237,12 +251,12 @@ session_start();
                 <div class='form-group'>
                     <h1 id="pan_wyj">DODAJ WYJAZD</h1>
                     <label for='tytul'>Tytuł:</label>
-                    <input type='text' id='tytul' name='tytul' required>
+                    <input type='text' id='tytul' name='tytul' required placeholder="Wyjazd na...">
                 </div>
 
                 <div class='form-group'>
                     <label for='tresc'>Treść:</label>
-                    <textarea id='tresc' name='tresc' rows='4' required></textarea>
+                    <textarea id='tresc' name='tresc' rows='4' required placeholder="Treść"></textarea>
                 </div>
 
                 <div class='form-group'>
@@ -252,46 +266,146 @@ session_start();
 
                 <div class='form-group'>
                     <label for='zdjecia'>Zdjęcia:</label>
-                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='image/*'>
-                    <div id='preview_1' class='preview'></div>
+                    <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-preview-id='preview_2' multiple accept='image/*'>
+                    <div id='preview_2' class='preview'></div>
                 </div>
 
-                <button type="reset" id="usun" name="">Usuń</button>
-                <button type='submit' class='el_panel_gl'>Zapisz</button>
+                <button type="reset" id="usun" name="">Wyczyść</button>
+                <button type='submit' class='el_panel_gl' name="dodaj_main2">Zapisz</button>
             </form>
         </section>
         <section id="pn_WYJAZDY_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 600px; flex: 1; padding: 10px; padding-right: 70px;">
         <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 18px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin-left:14px ;">DODANE WYJAZDY</h1>
             <?php
-                $wyjazdy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM wyjazdy");
+                $wyjazdy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM wyjazdy ORDER BY id DESC");
                 if(mysqli_num_rows(result: $wyjazdy) < 1){
-                    echo "<h1>Nie ma aktualnie żadnych konkursów😞</h1>";
+                    echo "<h1>Nie ma aktualnie żadnych wyjazdów😞</h1>";
                 } else {
                     while($wyj_wiersz = mysqli_fetch_array(result: $wyjazdy)){
-                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm'>
+                        $data = $wyj_wiersz[4];
+                        $images = explode(",", $data);
+
+                        
+                        echo "<form method='post' enctype='multipart/form-data' id='uploadForm_res'>
                                 <div class='form-group'>
                                     <label for='tytul'>Tytuł:</label>
-                                    <div id='tytol' name='tytul'>{$wyj_wiersz[1]}</div>
+                                    <input type='text' id='tytul' name='tytul' value='{$wyj_wiersz[1]}' required>
                                 </div>
 
                                 <div class='form-group'>
                                     <label for='tresc'>Treść:</label>
-                                    <div id='tresc' name='tresc' rows='4'>{$wyj_wiersz[2]}</div>
+                                    <textarea id='tresc' name='tresc' required>{$wyj_wiersz[2]}</textarea>
                                 </div>
 
                                 <div class='form-group'>
                                     <label for='data'>Data:</label>
-                                    <div id='data' name='data'>{$wyj_wiersz[3]}</div>
+                                    <input type='date' id='data' name='data' value='{$wyj_wiersz[3]}' required>
                                 </div>
-
                                 <div class='form-group'>
-                                    <label for='zdjecia'>Zdjęcia:</label>
-                                    
-                                    <div id='preview_1' class='preview'>{$wyj_wiersz[4]}</div>
-                                </div>
+                                <label for='zdjecia'>Zdjęcia:</label>
+                                <input type='file' id='zdjecia' name='zdjecia[]' class='file-input' data-id='1' multiple accept='image/*'>";
+
+                          echo "</div>
                                 <input type='number' value='{$wyj_wiersz[0]}' name='id' hidden>
-                        </form>";
+                                <input type='hidden' name='confirm' value='false' id='confirmInput_res'>
+                                <button type='submit' id='usun' name='usun_main2'>Usuń wyjazd</button>
+                                <button type='submit' class='el_panel_gl' name='zapisz_main2'>Zapisz zmiany</button>
+                            </form><br><br><br>";
                     }
+                }
+
+                if(isset($_POST['dodaj_main2']) || isset($_POST['zapisz_main2'])){
+                    $tytul = mysqli_real_escape_string($polaczenie, $_POST['tytul']);
+                    $tresc = mysqli_real_escape_string($polaczenie, $_POST['tresc']);
+                    $data = mysqli_real_escape_string($polaczenie, $_POST['data']);
+                    
+                    $tytul_bez_pl_znak = removePolishChars($tytul);
+
+                    $id_date = date('Y_m_d') . '_';
+                    $sciezka_papki = sanitizePath($sciezka_papki);
+                    $sciezka_papki = 'NEW/BIB_REAL_TEST/photo/wyjazdy/' . $tytul_bez_pl_znak . '_' . $id_date;
+                
+                    // Инициализация нового папки для записи данных, если её ещё нет
+                    $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $sciezka_papki;
+
+                    echo "<script>console.log('Tytul: ". $tytul ."\n');
+                                  console.log('Obrobiony tytul: ". $tytul_bez_pl_znak ."\n');
+                                  console.log('Zformowana śćieżka: ". $sciezka_papki ."\n');
+                                  console.log('Absolutna ścieżka: ". $targetPath ."\n');
+                        </script>";
+
+                    if (!is_dir($targetPath)) {
+                        if(!mkdir($targetPath, 0777, true)) {
+                            echo "<script>alert('Nie udało się stworzyć katalog');</script>";
+                            exit;
+                        }
+                    }
+                    
+                    $dozwolone_typy = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+                    $zdjecia_do_bazy = [];
+                    
+                    foreach ($_FILES['zdjecia']['tmp_name'] as $index => $tmpFile) {
+                        $fileName = $_FILES['zdjecia']['name'][$index];
+                        $fileType = $_FILES['zdjecia']['type'][$index];
+                    
+                        if (!in_array($fileType, $dozwolone_typy)) {
+                            echo "<script>alert('Niedostępny typ pliku');</script>";
+                            continue;
+                        }
+                        $uniqueFilename = $sciezka_papki . '/' . date('Y_m_d') . '__' . ($index + 1) . '_' . basename($fileName); // Формирование уникального ID файла
+                    
+                        $sciezka_test = $_SERVER['DOCUMENT_ROOT'] . "/" . $uniqueFilename;
+
+                        if (move_uploaded_file($tmpFile, "$sciezka_test")) {
+                            $zdjecia_do_bazy[] = $uniqueFilename;  // Сохранение пути к файлу
+                    
+                            // Копирование файлов в конкретную папку
+                            $targetFile = $_SERVER['DOCUMENT_ROOT'] . $uniqueFilename;
+                            if (!copy($targetFile, $targetPath . '/' . basename($uniqueFilename))) {
+                                echo "<script>alert('Kopiowanie pliku naciśnij OK');</script>";
+                            }
+                        } else {
+                            echo "<script>alert('Plik zapisał się NIE prawidłowo naciśnij OK !');</script>";
+                            echo "<script>alert('".$uniqueFilename."');</script>";
+                        }
+                    }
+                    
+                    $nazwy_zdjec = implode(',', $zdjecia_do_bazy);
+                    
+                    $dodanie_danych = "INSERT INTO wyjazdy (tytul, tresc, `data`, nazwy_zdjec) VALUES ('$tytul', '$tresc', '$data', '$nazwy_zdjec')";
+                    
+                    if (mysqli_query($polaczenie, $dodanie_danych) === true) {
+                        echo "<script>alert('DANE DODANE');
+                                    window.location.href='../BIB_REAL_TEST/admin.php';
+                        </script>";
+                    } else {
+                        echo "<script>alert('POMYŁKA PRZY DODAWANIU DANYCH');</script>";
+                    }
+                    
+                }
+
+                if(isset($_POST['usun_main2'])){
+                    $id = $_POST['id'];
+                    echo "
+                    <script>
+                        if(document.getElementById('usun_main2').onclick){
+                            if(confirm('Czy napewno chcesz usunąć ten konkurs?')){
+                                '" . mysqli_query($polaczenie, "DELETE FROM wyjazdy WHERE id=$id");"';
+                            }else{
+                                alert('Usunięcie anulowane');
+                        }
+                            
+                    }
+                    </script>";
+                }
+
+                if(isset($_POST['zapisz_main2'])){
+                    $id = $_POST['id'];
+                    $tytul = !empty($_POST['tytul']) ? $_POST['tytul'] : $row['tytul'];
+                    $tresc = !empty($_POST['tresc']) ? $_POST['tresc'] : $row['tresc'];
+                    $data = !empty($_POST['data']) ? $_POST['data'] : $row['data'];
+                    $nazwy_zdjec = !empty($_POST['nazwy_zdjec']) ? $_POST['nazwy_zdjec'] : $row['nazwy_zdjec'];
+                    mysqli_query($polaczenie, "UPDATE wyjazdy SET tytul='$tytul' tresc='$tresc' `data`='$data' nazwy_zdjec='$nazwy_zdjec' WHERE id=$id");
                 }
             ?>
         </section>

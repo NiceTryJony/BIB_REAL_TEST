@@ -14,9 +14,9 @@
 <!-- Боковая панель -->
 <section class="panel" id="sidePanel">
     <br><br>
-    <h2 id="pan_gl_nap">Panel Główny</h2><br>
+    <!-- <h2 id="pan_gl_nap">Panel Główny</h2><br> -->
     <ul>
-        <li class="el_panel_li"><button class="el_panel_gl" onclick="switchPanel('main0')">Panel Główny</button></li>
+        <!-- <li class="el_panel_li"><button class="el_panel_gl" onclick="switchPanel('main0')">Panel Główny</button></li> -->
         <li class="el_panel_li"><button class="el_panel_gl" onclick="switchPanel('main1')">Konkursy</button></li>
         <li class="el_panel_li"><button class="el_panel_gl" onclick="switchPanel('main2')">Wyjazdy</button></li>
         <li class="el_panel_li"><button class="el_panel_gl" onclick="switchPanel('main3')">Wycieczki</button></li>
