@@ -53,8 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //     });
     // }
 
-
-
     document.querySelectorAll('.file-input').forEach(input => {
         const previewId = input.dataset.previewId;
         const preview = document.getElementById(previewId);
@@ -104,31 +102,60 @@ document.addEventListener('DOMContentLoaded', () => {
             img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.4)';
         });
     
-        img.addEventListener('click', () => {
-            const overlay = document.getElementById('overlay');
-            const overlayImage = document.getElementById('overlayImage');
-            overlayImage.src = img.src;
-            overlay.style.display = 'flex';
+        // img.addEventListener('click', () => {
+        //     const overlay = document.getElementById('overlay');
+        //     const overlayImage = document.getElementById('overlayImage');
+        //     overlayImage.src = img.src;
+        //     overlay.style.display = 'flex';
+        // });
+
+        // img.addEventListener('dblclick', () => {
+        //     img.remove();
+        // });
+
+        let clickTimer;
+        img.addEventListener('click', (e) => {
+            // Предотвращаем двойное срабатывание
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                overlayImage.src = img.src;
+                overlay.style.display = 'flex';
+            }, 200); // Задержка для разделения кликов
         });
 
-        img.addEventListener('dblclick', () => {
+        img.addEventListener('dblclick', (e) => {
+            clearTimeout(clickTimer); // Отменяем обработку одинарного клика
+            e.stopPropagation(); // Блокируем всплытие события
+
+            // Удаление изображения и очистка файлового ввода
             img.remove();
+            fileInput.value = ''; // Очищаем поле выбора файлов
         });
+
     }
     
-    
-
     // Закрытие оверлея
-    closeButton.addEventListener('click', () => {
-        overlay.style.display = 'none';
-    });
+    // closeButton.addEventListener('click', () => {
+    //     overlay.style.display = 'none';
+    // });
 
-    overlay.addEventListener('click', (event) => {
-        if (event.target === overlay) {
+    // overlay.addEventListener('click', (event) => {
+    //     if (event.target === overlay) {
+    //         overlay.style.display = 'none';
+    //     }
+    // });
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) { // Проверяем клик вне изображения
             overlay.style.display = 'none';
         }
     });
+    
+    overlayImage.addEventListener('click', (e) => {
+        e.stopPropagation(); // Блокируем закрытие при клике на само изображение
+    });
 
+    
     document.getElementById('wyloguj').addEventListener('click', function () {
         if (confirm('Czy na pewno chesz wylogować się?')) {
             document.getElementById('confirmInput').value = 'true'; // Устанавливаем подтверждение

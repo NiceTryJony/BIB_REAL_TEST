@@ -274,9 +274,11 @@ button[type="reset"]:active {
     align-items: center;
 }
 
-#overlay img {
-    max-width: 70%;
-    max-height: 70%;
+#overlayImage {
+    max-width: 70vw;
+    max-height: 70vh;
+    transition: transform 0.3s;
+    cursor: default;
 }
 
 #overlay #close {

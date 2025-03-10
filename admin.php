@@ -245,7 +245,7 @@ session_start();
     </main>
 
     <main id='main2' class='main active' style='display:none;'>
-    <section id="pn_DODATKOWA_WYJ" style="display:flex; gap: 250px; align-items: flex-start;">
+    <section id="pn_DODATKOWA_WYJ" style="display:flex; gap: 250px; align-items: flex-start;" >
         <section id='pn_WYJAZDY' style="flex: 1; max-width: 40%;">
             <form method='post' enctype='multipart/form-data' id="uploadForm">
                 <div class='form-group'>
@@ -274,7 +274,7 @@ session_start();
                 <button type='submit' class='el_panel_gl' name="dodaj_main2">Zapisz</button>
             </form>
         </section>
-        <section id="pn_WYJAZDY_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 600px; flex: 1; padding: 10px; padding-right: 70px;">
+        <section id="pn_WYJAZDY_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 700px; flex: 1; padding: 10px; padding-right: 70px;">
         <h1 style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); padding: 18px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; margin-left:14px ;">DODANE WYJAZDY</h1>
             <?php
                 $wyjazdy = mysqli_query(mysql: $polaczenie, query: "SELECT * FROM wyjazdy ORDER BY id DESC");
