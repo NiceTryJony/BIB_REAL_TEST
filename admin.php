@@ -31,17 +31,16 @@ session_start();
             const fileField = document.getElementById("zdjecia");
             const form = document.getElementById("uploadForm");
 
-            // Генерация текущей даты
+            // Generacja dzisiejszej daty
             const now = new Date();
             const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+            const month = String(now.getMonth() + 1).padStart(2, '0');
             const year = now.getFullYear();
 
-            // Формирование имени файла
             const title = titleField.value.trim().replace(/\s+/g, "_");
             const newFilename = `${day}_${month}_${year}_${title}`;
 
-            // Создаем скрытое поле для передачи имени файла
+            // Tworzymy ukryte pole dla przekazania imienia pliku
             const filenameField = document.createElement("input");
             filenameField.type = "hidden";
             filenameField.name = "filename";
@@ -60,7 +59,7 @@ session_start();
     <main id='main1' class='main active' style='display:none;'>
     <section id="pn_DODATKOWA_KON" style="display:flex; gap: 250px; align-items: flex-start;">
         <section id='pn_KONKURS' style="flex: 1; max-width: 40%;">
-            <form method='post' enctype='multipart/form-data' id="uploadForm">
+            <form method='post' enctype='multipart/form-data' id="uploadForm" style="height: 700px;">
                 <div class='form-group'>
                     <h1 id="pan_kon">DODAJ KONKURS</h1>
                     <label for='tytul'>Tytuł:</label>
@@ -83,8 +82,8 @@ session_start();
                     <div id='preview_1' class='preview'></div>
                 </div>
 
-                <button type="reset">Wyczyść</button>
-                <button type='submit' class='el_panel_gl' name="dodaj_main1">Dodaj</button>
+                <button type="reset" >Wyczyść</button>
+                <button type='submit' class='el_panel_gl' name="dodaj_main1" style="width: 140px; font-size: 104%;">Dodaj</button>
             </form>
         </section>
         <section id="pn_KONKURS_dane" style="overflow-y:auto; overflow-x:hidden; max-width: 100%; height: 738px; flex: 1; padding: 10px; padding-right: 70px;">
@@ -96,8 +95,8 @@ session_start();
                 } else {
                     while($k_wiersz = mysqli_fetch_array($konkursy)){
                          // {$k_wiersz[4]}  TO SĄ ZDJĘCIA    NIE USUWAĆ !!!
-                         $data = $k_wiersz[4];
-                         $images = explode(",", $data);
+                        //  $data = $k_wiersz[4];
+                        //  $images = explode(",", $data);
                         // SPRAWDZAMY CZY SĄ ZDJĘCIA W ZMIENNEJ
                         // if (!empty($images)) {
                         //     foreach ($images as $image) {
@@ -112,6 +111,8 @@ session_start();
                         //         }
                         //     }
                         // }
+
+
                         echo "<form method='post' enctype='multipart/form-data' id='uploadForm_res'>
                                 <div class='form-group'>
                                     <label for='tytul'>Tytuł:</label>
@@ -137,6 +138,7 @@ session_start();
                                 <button type='submit' id='usun' name='usun_main1'>Usuń konkurs</button>
                                 <button type='submit' class='el_panel_gl' name='zapisz_main1'>Zapisz zmiany</button>
                             </form><br><br><br>";
+
                     }
                 }
                 function removePolishChars($text) {
@@ -159,7 +161,7 @@ session_start();
                     $sciezka_papki = sanitizePath($sciezka_papki);
                     $sciezka_papki = 'NEW/BIB_REAL_TEST/photo/konkursy/' . $tytul_bez_pl_znak . '_' . $id_date;
                 
-                    // Инициализация нового папки для записи данных, если её ещё нет
+                    // Inicjalizacja nowego folderu dla zdjęć jeżeli jej jeścze nie ma
                     $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $sciezka_papki;
 
                     echo "<script>console.log('Tytul: ". $tytul ."\n');
@@ -191,9 +193,9 @@ session_start();
                         $sciezka_test = $_SERVER['DOCUMENT_ROOT'] . "/" . $uniqueFilename;
 
                         if (move_uploaded_file($tmpFile, "$sciezka_test")) {
-                            $zdjecia_do_bazy[] = $uniqueFilename;  // Сохранение пути к файлу
+                            $zdjecia_do_bazy[] = $uniqueFilename;  // Zapisanie ścieżki do pliku
                     
-                            // Копирование файлов в конкретную папку
+                            // Kopiowanie plików w określony folder
                             $targetFile = $_SERVER['DOCUMENT_ROOT'] . $uniqueFilename;
                             if (!copy($targetFile, $targetPath . '/' . basename($uniqueFilename))) {
                                 echo "<script>alert('Kopiowanie pliku naciśnij OK');</script>";
@@ -231,14 +233,28 @@ session_start();
                     }
                     </script>";
                 }
-                if(isset($_POST['zapisz_main1'])){
+                // if(isset($_POST['zapisz_main1'])){
+                //     $id = $_POST['id'];
+                //     $tytul = !empty($_POST['tytul']) ? $_POST['tytul'] : $row['tytul'];
+                //     $tresc = !empty($_POST['tresc']) ? $_POST['tresc'] : $row['tresc'];
+                //     $data = !empty($_POST['data']) ? $_POST['data'] : $row['data'];
+                //     $nazwy_zdjec = !empty($_POST['nazwy_zdjec']) ? $_POST['nazwy_zdjec'] : $row['nazwy_zdjec'];
+                //     mysqli_query($polaczenie, "UPDATE konkursy SET tytul='$tytul' tresc='$tresc' `data`='$data' nazwy_zdjec='$nazwy_zdjec' WHERE id=$id");
+                // }
+
+                if (isset($_POST['zapisz_main1'])) {
                     $id = $_POST['id'];
                     $tytul = !empty($_POST['tytul']) ? $_POST['tytul'] : $row['tytul'];
                     $tresc = !empty($_POST['tresc']) ? $_POST['tresc'] : $row['tresc'];
                     $data = !empty($_POST['data']) ? $_POST['data'] : $row['data'];
                     $nazwy_zdjec = !empty($_POST['nazwy_zdjec']) ? $_POST['nazwy_zdjec'] : $row['nazwy_zdjec'];
-                    mysqli_query($polaczenie, "UPDATE konkursy SET tytul='$tytul' tresc='$tresc' `data`='$data' nazwy_zdjec='$nazwy_zdjec' WHERE id=$id");
+                
+                    $stmt = mysqli_prepare($polaczenie, "UPDATE konkursy SET tytul=?, tresc=?, `data`=?, nazwy_zdjec=? WHERE id=?");
+                    mysqli_stmt_bind_param($stmt, "ssssi", $tytul, $tresc, $data, $nazwy_zdjec, $id);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_close($stmt);
                 }
+                
             ?>
         </section>
     </section>
@@ -325,7 +341,6 @@ session_start();
                     $sciezka_papki = sanitizePath($sciezka_papki);
                     $sciezka_papki = 'NEW/BIB_REAL_TEST/photo/wyjazdy/' . $tytul_bez_pl_znak . '_' . $id_date;
                 
-                    // Инициализация нового папки для записи данных, если её ещё нет
                     $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $sciezka_papki;
 
                     echo "<script>console.log('Tytul: ". $tytul ."\n');
@@ -357,9 +372,9 @@ session_start();
                         $sciezka_test = $_SERVER['DOCUMENT_ROOT'] . "/" . $uniqueFilename;
 
                         if (move_uploaded_file($tmpFile, "$sciezka_test")) {
-                            $zdjecia_do_bazy[] = $uniqueFilename;  // Сохранение пути к файлу
+                            $zdjecia_do_bazy[] = $uniqueFilename;
                     
-                            // Копирование файлов в конкретную папку
+
                             $targetFile = $_SERVER['DOCUMENT_ROOT'] . $uniqueFilename;
                             if (!copy($targetFile, $targetPath . '/' . basename($uniqueFilename))) {
                                 echo "<script>alert('Kopiowanie pliku naciśnij OK');</script>";
@@ -519,11 +534,12 @@ session_start();
         $polaczenie = mysqli_connect('localhost', 'root', '02dE@Ks7sw5sRc4cGj9', 'biblioteka_zss');
 
         // Если пользователь отправил форму логина
+        // Sprawdzamy czy juzer wysław swoje "zalogowanie"
         if(isset($_POST['zaloguj'])) {
             $email = mysqli_real_escape_string($polaczenie, $_POST['email']);
             $haslo = $_POST['haslo'];
 
-            // Проверяем наличие пользователя с этим email
+            // Sprawdzamy na istnienie określonego usera z takim email
             $sprHaslo = mysqli_query($polaczenie, "SELECT haslo, uprawnienia FROM konta WHERE nazwa_uzytkownika='$email'");
             
             if ($sprHaslo && mysqli_num_rows($sprHaslo) > 0) {
@@ -531,12 +547,12 @@ session_start();
                 $hashed_password = $row['haslo'];
                 $uprawnienia = $row['uprawnienia'];
 
-                // Проверяем пароль
+                // Sprawdzanie zaszyfrowanego hasła
                 if (password_verify($haslo, $hashed_password)) {
-                    // Сохранение данных сессии
+                    // Zapisanie dannych do sesji
                     $_SESSION['zalogowano'] = $uprawnienia;
 
-                    // Переключение панелей
+                    // Przełączenie paneli
                     echo "
                     <script>
                         document.getElementById('main0').style.display='inline';
@@ -570,7 +586,7 @@ session_start();
             }
         }
 
-        // Проверка наличия сессии после перезагрузки страницы и восстановление состояния
+        // Sprawdzanie istniania sesji po ponownym załądowaniu strony
         if(isset($_SESSION['zalogowano'])) {
             echo "
             <script>
@@ -605,65 +621,10 @@ session_start();
         mysqli_close($polaczenie);
         ?>
 
-    
-    <!--?php
-    // if(isset($_POST['zaloguj'])) {
-    //     $email = $_POST['email'];
-    //     $haslo = $_POST['haslo'];
-    //     $sprHaslo = mysqli_query($polaczenie, "SELECT haslo  FROM konta WHERE nazwa_uzytkownika='$email'");
-
-    //     if ($sprHaslo && mysqli_num_rows($sprHaslo) > 0) {
-    //         $row = mysqli_fetch_array($sprHaslo);
-    //         $hashed_password = $row[0];
-
-    //         if (password_verify($haslo, $hashed_password)) {
-    //             $sesja = mysqli_fetch_array(mysqli_query($polaczenie, "SELECT `uprawnienia` FROM konta WHERE nazwa_uzytkownika='$email'"));
-    //             $_SESSION['zalogowano'] = $sesja[0];
-    //             echo "
-    //             <script>
-    //                 document.getElementById('main0').style.display='inline';
-    //                 document.getElementById('logowanie').style.display='none';
-
-    //                 // Переключение панелей
-    //                 function switchPanel(panelId) {
-    //                     // Скрыть все панели
-    //                     document.querySelectorAll('.main').forEach(panel => {
-    //                         panel.classList.remove('active');
-    //                         panel.style.display = 'none'; // Скрыть панель
-    //                     });
-    //                     // Показать активную панель
-    //                     const activePanel = document.getElementById(panelId);
-    //                     if (activePanel) {
-    //                         activePanel.classList.add('active');
-    //                         activePanel.style.display = 'block'; // Показать панель
-    //                     }
-    //                 }
-                
-
-    //             </script>";
-    //         } else {
-    //             echo "<script>
-    //                     console.log('złe hasło');
-    //                     const alarm='Nie prawidlowy email lub hasło! \n Przenosimy cię do strony głównej..';
-    //                     alert(alarm);
-    //                     window.location.href='../BIB_REAL_TEST/';
-    //                 </script>";
-    //         } //window.location.href='../BIB_REAL_TEST/';
-    //     } else {
-    //         echo "<script>
-    //                 console.log('zły email');
-    //                 alert('Nie prawidlowy email lub hasło! Przenosimy cię do strony głównej.');
-    //                 window.location.href='../BIB_REAL_TEST/';
-    //             </script>";
-    //     }
-    // }
-    // mysqli_close($polaczenie);
-    ?-->
-
     <div id="overlay">
-        <span id="close">X</span>
+        <span id="close"></span>
         <img src="" alt="Zoomed Image" style="border-radius: 15px;">
-    </div>
+    </div> 
     <script src="script.js"></script>
 </body>
 </html>
